@@ -16,18 +16,18 @@ app = Flask(__name__)
 
 # Configuration
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10 MB max file size
-ALLOWED_EXTENSIONS = {'wav', 'mp3', 'm4a', 'opus'}
+ALLOWED_EXTENSIONS = {'wav', 'mp3', 'm4a', 'opus', 'webm'}
 UPLOAD_FOLDER = 'temp_uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Load models
+# Load Stage 1 Models
 try:
     deepfake_model = joblib.load('deepfake_detector_svm.pkl')
     deepfake_scaler = joblib.load('deepfake_scaler.pkl')
     MODELS_LOADED = True
-    logger.info("Models loaded successfully.")
+    logger.info("Stage 1 Deepfake models loaded successfully.")
 except Exception as e:
-    logger.warning(f"Could not load models: {e}. Running in mock mode for demonstration.")
+    logger.warning(f"Could not load Stage 1 models: {e}. Running in mock mode for demonstration.")
     MODELS_LOADED = False
 
 def allowed_file(filename):
@@ -49,6 +49,9 @@ def convert_to_wav(input_path, output_path):
 def extract_features(file_path):
     """
     Stage 1: Deepfake Feature Extraction
+    - 3 second duration, 0.5s offset
+    - MFCC (13), Delta, Delta-Delta
+    - Mean pooling -> (39,) feature vector
     """
     temp_wav = None
     ext = file_path.rsplit('.', 1)[1].lower()
@@ -90,6 +93,11 @@ def extract_features(file_path):
 def extract_speaker_features(file_path):
     """
     Stage 2: Speaker Verification Feature Extraction
+    - 4 second duration
+    - Silence trimming (top_db=25)
+    - Pre-emphasis (0.97)
+    - MFCC (20) + Delta
+    - Mean and Std pooling -> Concatenated vector
     """
     temp_wav = None
     ext = file_path.rsplit('.', 1)[1].lower()
@@ -162,7 +170,7 @@ def analyze():
         return jsonify({'error': 'No selected file for one or both inputs.'}), 400
         
     if not allowed_file(suspicious_file.filename) or not allowed_file(reference_file.filename):
-        return jsonify({'error': 'Invalid file format. Allowed formats: .wav, .mp3, .m4a, .opus'}), 400
+        return jsonify({'error': 'Invalid file format. Allowed formats: .wav, .mp3, .m4a, .opus, .webm'}), 400
 
     susp_filename = secure_filename(suspicious_file.filename)
     ref_filename = secure_filename(reference_file.filename)

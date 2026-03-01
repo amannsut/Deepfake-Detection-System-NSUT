@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Audio Authenticity Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="container">
+        <header class="hero">
+            <div class="logo-icon"><i class="fas fa-wave-square"></i></div>
+            <h1>AI Audio Authenticity Analyzer</h1>
+            <p class="subtitle">Detect Deepfake Voices with Advanced AI</p>
+        </header>
+
+        <main>
+            <section class="upload-section glass-panel" id="upload-section">
+                <div class="upload-area" id="drop-zone">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h3>Drag & Drop Audio File</h3>
+                    <p>or click to browse</p>
+                    <span class="file-info">Supported formats: .wav, .mp3 (Max 16MB)</span>
+                    <input type="file" id="file-input" accept=".wav,.mp3" hidden>
+                </div>
+                
+                <div class="selected-file hidden" id="selected-file">
+                    <i class="fas fa-file-audio"></i>
+                    <span id="filename">filename.wav</span>
+                    <button id="remove-file" class="icon-btn"><i class="fas fa-times"></i></button>
+                </div>
+
+                <button id="analyze-btn" class="primary-btn" disabled>
+                    <span>Analyze Audio</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                
+                <div id="error-message" class="error-message hidden"></div>
+            </section>
+
+            <section class="loading-section hidden" id="loading-section">
+                <div class="loader">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <p>Analyzing audio signatures...</p>
+            </section>
+
+            <section class="results-section hidden" id="results-section">
+                <div class="glass-panel results-card">
+                    <h2 class="results-title">Analysis Results</h2>
+                    
+                    <div class="verdict-container" id="verdict-container">
+                        <div class="verdict-badge" id="verdict-badge">
+                            <i class="fas fa-check-circle" id="verdict-icon"></i>
+                            <span id="verdict-text">REAL</span>
+                        </div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <div class="metric-header">
+                                <span>Confidence Score</span>
+                                <span id="confidence-value" class="metric-value">0%</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" id="confidence-bar"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-box">
+                            <div class="metric-header">
+                                <span>Speaker Verification</span>
+                            </div>
+                            <div class="speaker-badge" id="speaker-badge">
+                                <i class="fas fa-user-check" id="speaker-icon"></i>
+                                <span id="speaker-text">MATCH</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="reset-btn" class="secondary-btn">
+                        <i class="fas fa-redo"></i> Analyze Another File
+                    </button>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2026 AI Audio Authenticity Analyzer. Powered by SVM & MFCC.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

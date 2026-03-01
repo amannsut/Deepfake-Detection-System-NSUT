@@ -28,8 +28,8 @@
                     <i class="fas fa-cloud-upload-alt upload-icon"></i>
                     <h3>Drag & Drop Audio File</h3>
                     <p>or click to browse</p>
-                    <span class="file-info">Supported formats: .wav, .mp3 (Max 16MB)</span>
-                    <input type="file" id="file-input" accept=".wav,.mp3" hidden>
+                    <span class="file-info">Supported formats: .wav, .mp3, .m4a, .opus (Max 10MB)</span>
+                    <input type="file" id="file-input" accept=".wav,.mp3,.m4a,.opus" hidden>
                 </div>
                 
                 <div class="selected-file hidden" id="selected-file">
@@ -54,7 +54,7 @@
                     <div class="bar"></div>
                     <div class="bar"></div>
                 </div>
-                <p>Analyzing audio signatures...</p>
+                <p>Extracting MFCC features & analyzing for synthetic artifacts...</p>
             </section>
 
             <section class="results-section hidden" id="results-section">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <div class="metrics-grid">
+                    <div class="metrics-grid" style="grid-template-columns: 1fr;">
                         <div class="metric-box">
                             <div class="metric-header">
                                 <span>Confidence Score</span>
@@ -76,16 +76,6 @@
                             </div>
                             <div class="progress-bar-bg">
                                 <div class="progress-bar-fill" id="confidence-bar"></div>
-                            </div>
-                        </div>
-
-                        <div class="metric-box">
-                            <div class="metric-header">
-                                <span>Speaker Verification</span>
-                            </div>
-                            <div class="speaker-badge" id="speaker-badge">
-                                <i class="fas fa-user-check" id="speaker-icon"></i>
-                                <span id="speaker-text">MATCH</span>
                             </div>
                         </div>
                     </div>

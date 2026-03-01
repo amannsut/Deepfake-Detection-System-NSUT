@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: ai-audio-analyzer
+    env: docker
+    plan: free
+    # Docker environment automatically uses the Dockerfile in the root directory
+    # which ensures ffmpeg is installed alongside Python dependencies.
